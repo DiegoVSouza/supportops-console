@@ -1,0 +1,12 @@
+
+C:\estudo\Golpe\lab\projects\p06\e2e\screens.mjs
+   5:13  error  'process' is not defined  no-undef
+  14:38  error  'process' is not defined  no-undef
+
+✖ 2 problems (2 errors, 0 warnings)
+
+lint: exit 1
+check-fast: FAIL, run npm run lint and fix the first error
+fast: exit 1
+check-full: FAIL at fast
+exit=1

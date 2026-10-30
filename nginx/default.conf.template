@@ -1,0 +1,64 @@
+log_format console_json escape=json
+  '{"time":"$time_iso8601","method":"$request_method","path":"$uri","status":$status,'
+  '"bytes":$body_bytes_sent,"duration":$request_time,"upstream_duration":"$upstream_response_time"}';
+
+server {
+  listen 8080;
+  server_name _;
+  root /usr/share/nginx/html;
+  access_log /dev/stdout console_json;
+  server_tokens off;
+  resolver ${NGINX_LOCAL_RESOLVERS} valid=30s ipv6=off;
+  client_max_body_size 1m;
+
+  add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' ${OIDC_ORIGIN}; frame-src ${OIDC_ORIGIN}; form-action 'none'; base-uri 'none'; frame-ancestors 'none'" always;
+  add_header X-Content-Type-Options nosniff always;
+  add_header Referrer-Policy no-referrer always;
+
+  location = /healthz {
+    access_log off;
+    default_type text/plain;
+    return 200 "ok\n";
+  }
+
+  location = /readyz {
+    access_log off;
+    set $upstream ${P05_API_URL};
+    proxy_ssl_server_name on;
+    proxy_connect_timeout 3s;
+    proxy_read_timeout 5s;
+    proxy_set_header Host $proxy_host;
+    rewrite ^ /healthz break;
+    proxy_pass $upstream;
+  }
+
+  location = /config.json {
+    alias /etc/nginx/conf.d/config.json;
+    default_type application/json;
+    add_header Cache-Control no-store always;
+  }
+
+  location /api/ {
+    set $upstream ${P05_API_URL};
+    proxy_ssl_server_name on;
+    proxy_set_header Host $proxy_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_read_timeout 60s;
+    rewrite ^/api/(.*)$ /$1 break;
+    proxy_pass $upstream;
+  }
+
+  location /assets/ {
+    add_header Cache-Control "public, max-age=31536000, immutable" always;
+    add_header Content-Security-Policy "default-src 'none'; font-src 'self'" always;
+    add_header X-Content-Type-Options nosniff always;
+  }
+
+  location / {
+    add_header Cache-Control no-cache always;
+    add_header Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data:; connect-src 'self' ${OIDC_ORIGIN}; frame-src ${OIDC_ORIGIN}; form-action 'none'; base-uri 'none'; frame-ancestors 'none'" always;
+    add_header X-Content-Type-Options nosniff always;
+    add_header Referrer-Policy no-referrer always;
+    try_files $uri /index.html;
+  }
+}

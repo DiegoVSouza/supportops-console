@@ -1,3 +1,42 @@
 {
-  "features": []
+  "features": [
+    {
+      "id": "console-auth",
+      "description": "Authorization Code with PKCE through Keycloak, sign out and token renewal",
+      "requirement_ids": [
+        "SEC-001"
+      ],
+      "status": "PASS_LOCAL_STACK",
+      "evidence": ".planning/phases/001-console/VERIFY.md"
+    },
+    {
+      "id": "console-tickets",
+      "description": "List, create and open tickets, run triage as a durable task",
+      "requirement_ids": [
+        "API-001"
+      ],
+      "status": "PASS_LOCAL_STACK",
+      "evidence": ".planning/phases/001-console/VERIFY.md"
+    },
+    {
+      "id": "console-approvals",
+      "description": "Approver sees amount and requester and decides a refund",
+      "requirement_ids": [
+        "API-001",
+        "SEC-001"
+      ],
+      "status": "PASS_LOCAL_STACK",
+      "evidence": ".planning/phases/001-console/VERIFY.md"
+    },
+    {
+      "id": "console-quality",
+      "description": "axe, bundle budget and contract drift gates",
+      "requirement_ids": [
+        "A11Y-001",
+        "PERF-001"
+      ],
+      "status": "PASS_LOCAL_STACK",
+      "evidence": ".planning/phases/001-console/VERIFY.md"
+    }
+  ]
 }

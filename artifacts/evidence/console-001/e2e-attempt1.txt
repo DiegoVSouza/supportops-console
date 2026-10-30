@@ -1,0 +1,36 @@
+
+Running 2 tests using 1 worker
+
+  ✘  1 e2e\console.spec.ts:24:1 › agent and approver complete a refund, and tenants stay apart (1.1m)
+  ✓  2 e2e\console.spec.ts:71:1 › narrow screen keeps the console usable (4.3s)
+
+
+  1) e2e\console.spec.ts:24:1 › agent and approver complete a refund, and tenants stay apart ───────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('aguarda aprovação')
+    Expected: visible
+    Timeout: 60000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('aguarda aprovação') with timeout 60000ms
+      - waiting for getByText('aguarda aprovação')
+
+
+      42 |   const ticketUrl = agent.url();
+      43 |   await agent.getByRole("button", { name: "Analisar ticket" }).click();
+    > 44 |   await expect(agent.getByText("aguarda aprovação")).toBeVisible({ timeout: 60_000 });
+         |                                                      ^
+      45 |   await expectNoViolations(agent);
+      46 |
+      47 |   const approver = await (await browser.newContext({ ignoreHTTPSErrors: true })).newPage();
+        at C:\estudo\Golpe\lab\projects\p06\e2e\console.spec.ts:44:54
+
+    Error Context: test-results\console-agent-and-approver-bafd2-fund-and-tenants-stay-apart\error-context.md
+
+  1 failed
+    e2e\console.spec.ts:24:1 › agent and approver complete a refund, and tenants stay apart ────────
+  1 passed (1.3m)
+exit=1
