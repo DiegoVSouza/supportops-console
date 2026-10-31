@@ -2,7 +2,10 @@ import { spawnSync } from "node:child_process";
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+// Each case starts a node process that runs openapi-typescript; give it room on a loaded machine.
+vi.setConfig({ testTimeout: 30000 });
 
 const here = process.cwd();
 const scratch = [];
