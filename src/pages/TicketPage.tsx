@@ -119,7 +119,7 @@ function Triage({ api, ticketId, canAct, taskId, onStarted }: {
   }
 
   const running = task !== null && !TERMINAL.has(task.status);
-  const result = task?.result as { response?: string; citations?: Citation[]; approval_state?: string; refund?: { amount_cents?: number } } | null | undefined;
+  const result = task?.result as { response?: string; citations?: Citation[]; approval_state?: string; refund?: { amount_cents?: number }; llm_steps?: ModelCall[] } | null | undefined;
   return (
     <Panel title="Análise">
       {error && <ErrorNote message={error} />}
@@ -143,7 +143,43 @@ function Triage({ api, ticketId, canAct, taskId, onStarted }: {
           </ul>
         </>
       )}
+      {result?.llm_steps && result.llm_steps.length > 0 && <ModelCalls steps={result.llm_steps} />}
     </Panel>
+  );
+}
+
+/** One row per real model call of the run. Every number comes from the provider receipt, none is computed here. */
+interface ModelCall {
+  step?: number;
+  agent?: string;
+  model?: string;
+  input_tokens?: number;
+  output_tokens?: number;
+  latency_ms?: number;
+  estimated_cost_usd?: number;
+}
+
+function ModelCalls({ steps }: { steps: ModelCall[] }) {
+  return (
+    <>
+      <h3 className="sub">Chamadas ao modelo</h3>
+      <table className="calls">
+        <thead>
+          <tr><th scope="col">Agente</th><th scope="col">Modelo</th><th scope="col">Tokens (entrada / saída)</th><th scope="col">Latência</th><th scope="col">Custo estimado</th></tr>
+        </thead>
+        <tbody>
+          {steps.map((s, index) => (
+            <tr key={s.step ?? index}>
+              <td>{s.agent}</td>
+              <td>{s.model}</td>
+              <td>{s.input_tokens} / {s.output_tokens}</td>
+              <td>{s.latency_ms} ms</td>
+              <td>USD {s.estimated_cost_usd?.toFixed(6)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }
 

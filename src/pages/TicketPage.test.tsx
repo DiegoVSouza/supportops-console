@@ -16,6 +16,31 @@ const route = (task: unknown): Handler => (request) => {
 describe("TicketPage", () => {
   beforeEach(() => window.sessionStorage.clear());
 
+  it("lists each real model call of a live run with its tokens, latency and cost", async () => {
+    const steps = [
+      { step: 1, agent: "classifier", model: "openai/gpt-oss-20b", input_tokens: 508, output_tokens: 87, latency_ms: 406, estimated_cost_usd: 0.000065 },
+      { step: 2, agent: "responder", model: "openai/gpt-oss-20b", input_tokens: 656, output_tokens: 166, latency_ms: 341, estimated_cost_usd: 0.000099 },
+    ];
+    const task = { id: "task-2", status: "succeeded", attempts: 1, result: { response: "Pronto.", llm_steps: steps } };
+    const { api } = fakeApi(route(task));
+    render(<TicketPage api={api} id="t-1" canAct />);
+    await userEvent.click(await screen.findByRole("button", { name: "Analisar ticket" }));
+    await screen.findByText("Pronto.");
+    expect(screen.getByRole("heading", { name: "Chamadas ao modelo" })).toBeTruthy();
+    expect(screen.getByText("508 / 87")).toBeTruthy();
+    expect(screen.getByText("406 ms")).toBeTruthy();
+    expect(screen.getByText("USD 0.000099")).toBeTruthy();
+  });
+
+  it("shows no model table for a run without model calls", async () => {
+    const task = { id: "task-3", status: "succeeded", attempts: 1, result: { response: "Sem modelo." } };
+    const { api } = fakeApi(route(task));
+    render(<TicketPage api={api} id="t-1" canAct />);
+    await userEvent.click(await screen.findByRole("button", { name: "Analisar ticket" }));
+    await screen.findByText("Sem modelo.");
+    expect(screen.queryByText("Chamadas ao modelo")).toBeNull();
+  });
+
   it("runs triage as a task with an idempotency key and shows citations", async () => {
     const task = {
       id: "task-1", status: "succeeded", attempts: 1,
