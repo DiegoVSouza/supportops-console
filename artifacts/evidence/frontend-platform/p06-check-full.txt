@@ -1,0 +1,198 @@
+contract: PASS (P05 0.4.5)
+
+ RUN  v5.0.5 C:/estudo/Golpe/lab/projects/p06
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+ Test Files  8 passed (8)
+      Tests  30 passed (30)
+   Start at  13:39:46
+   Duration  20.95s (environment 84%, setup 8%, tests 6%, import 2%)
+
+lint: exit 0
+typecheck: exit 0
+contract:check: exit 0
+test: exit 0
+check-fast: OK
+[36mvite v8.3.5 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 33 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                      0.59 kB │ gzip:  0.35 kB
+dist/assets/playfair-display-vietnamese-900-normal-wtaM1xIw.woff2    5.71 kB
+dist/assets/anton-vietnamese-400-normal-2FfR1wHA.woff                6.82 kB
+dist/assets/playfair-display-vietnamese-900-normal-dpsjWZtQ.woff     7.13 kB
+dist/assets/anton-vietnamese-400-normal-CkBxLiRJ.woff2               8.68 kB
+dist/assets/courier-prime-latin-ext-400-normal-CKOCNFvK.woff         9.04 kB
+dist/assets/courier-prime-latin-ext-700-normal-BIFoAzHx.woff         9.28 kB
+dist/assets/playfair-display-cyrillic-900-normal-C8kZZFQC.woff2     11.86 kB
+dist/assets/playfair-display-latin-ext-900-normal-wdRhZY-D.woff2    12.65 kB
+dist/assets/courier-prime-latin-ext-400-normal-B-EsvyE4.woff2       12.73 kB
+dist/assets/courier-prime-latin-ext-700-normal-ByMJlNdM.woff2       12.92 kB
+dist/assets/playfair-display-cyrillic-900-normal-sDNg_-Xm.woff      14.20 kB
+dist/assets/courier-prime-latin-400-normal-BAlbUm6l.woff            14.38 kB
+dist/assets/courier-prime-latin-700-normal-CVvp4Sof.woff            14.67 kB
+dist/assets/anton-latin-400-normal-AUNGEG_V.woff                    15.63 kB
+dist/assets/playfair-display-latin-ext-900-normal-Dl6M2jFN.woff     16.23 kB
+dist/assets/anton-latin-400-normal-Byf51wtH.woff2                   18.61 kB
+dist/assets/courier-prime-latin-400-normal-BbyBr73r.woff2           18.64 kB
+dist/assets/courier-prime-latin-700-normal-D1YCjmaD.woff2           19.34 kB
+dist/assets/playfair-display-latin-900-normal-oSb7_CWx.woff2        22.37 kB
+dist/assets/special-elite-latin-ext-400-normal-ChcxYnmu.woff2       25.19 kB
+dist/assets/playfair-display-latin-900-normal-DypQvTWf.woff         27.39 kB
+dist/assets/anton-latin-ext-400-normal-BMODBQc6.woff                28.07 kB
+dist/assets/special-elite-latin-ext-400-normal-CaJZjSVf.woff        29.99 kB
+dist/assets/anton-latin-ext-400-normal-SyiqE2Jt.woff2               31.35 kB
+dist/assets/special-elite-latin-400-normal-YjDd9tmf.woff2           53.29 kB
+dist/assets/special-elite-latin-400-normal-BtSRmyJ6.woff            63.41 kB
+dist/assets/index-Cnk1FMua.css                                      19.93 kB │ gzip:  5.00 kB
+dist/assets/index-3QtWkAnp.js                                      316.99 kB │ gzip: 95.16 kB
+
+[32m✓ built in 1.89s[39m
+budget: PASS (92.0 KB gzip of 120 KB)
+
+Running 7 tests using 1 worker
+
+  ✓  1 e2e-offline\screens.spec.ts:49:3 › signed-out screen passes axe with contrast at 1000px (1.8s)
+  ✓  2 e2e-offline\screens.spec.ts:57:3 › console screens pass axe with contrast at 1000px and call the API cross-origin with the bearer token (3.6s)
+  ✓  3 e2e-offline\screens.spec.ts:49:3 › signed-out screen passes axe with contrast at 360px (1.5s)
+  ✓  4 e2e-offline\screens.spec.ts:57:3 › console screens pass axe with contrast at 360px and call the API cross-origin with the bearer token (5.3s)
+  ✓  5 e2e-offline\screens.spec.ts:80:1 › a cold API shows the wake notice with elapsed time instead of an endless spinner (5.0s)
+  ✓  6 e2e-offline\screens.spec.ts:93:1 › reduced motion keeps every screen readable (552ms)
+  ✓  7 e2e-offline\screens.spec.ts:101:1 › squint screenshots for the owner (DS-006, human review pending) (1.2s)
+
+  7 passed (42.2s)
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 804B 0.1s done
+#1 DONE 0.1s
+
+#2 [internal] load metadata for docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 105B 0.0s done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+#6 resolve docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+#6 resolve docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6 0.1s done
+#6 DONE 0.1s
+
+#7 [build 1/8] FROM docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+#7 resolve docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 0.1s done
+#7 DONE 0.1s
+
+#5 [internal] load build context
+#5 transferring context: 177.00kB 0.1s done
+#5 DONE 0.1s
+
+#8 [build 2/8] WORKDIR /app
+#8 CACHED
+
+#9 [build 3/8] COPY package.json package-lock.json ./
+#9 DONE 0.1s
+
+#10 [build 4/8] COPY vendor ./vendor
+#10 DONE 0.4s
+
+#11 [build 5/8] RUN npm ci --ignore-scripts
+#11 131.0 
+#11 131.0 added 229 packages, and audited 230 packages in 2m
+#11 131.0 
+#11 131.0 60 packages are looking for funding
+#11 131.0   run `npm fund` for details
+#11 131.5 npm notice
+#11 131.5 npm notice New major version of npm available! 11.19.1 -> 12.2.1
+#11 131.5 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#11 131.5 npm notice To update run: npm install -g npm@12.2.1
+#11 131.5 npm notice
+#11 131.5 
+#11 131.5 13 moderate severity vulnerabilities
+#11 131.5 
+#11 131.5 To address all issues (including breaking changes), run:
+#11 131.5   npm audit fix --force
+#11 131.5 
+#11 131.5 Run `npm audit` for details.
+#11 DONE 132.4s
+
+#12 [build 6/8] COPY index.html tsconfig.json vite.config.ts ./
+#12 DONE 0.6s
+
+#13 [build 7/8] COPY src ./src
+#13 DONE 0.1s
+
+#14 [build 8/8] RUN npx vite build
+#14 2.411 vite v8.3.5 building client environment for production...
+#14 2.456 transforming...
+#14 2.697 ✓ 33 modules transformed.
+#14 2.823 rendering chunks...
+#14 2.977 computing gzip size...
+#14 2.985 dist/index.html                                                      0.59 kB │ gzip:  0.35 kB
+#14 2.985 dist/assets/playfair-display-vietnamese-900-normal-wtaM1xIw.woff2    5.71 kB
+#14 2.985 dist/assets/anton-vietnamese-400-normal-2FfR1wHA.woff                6.82 kB
+#14 2.985 dist/assets/playfair-display-vietnamese-900-normal-dpsjWZtQ.woff     7.13 kB
+#14 2.985 dist/assets/anton-vietnamese-400-normal-CkBxLiRJ.woff2               8.68 kB
+#14 2.985 dist/assets/courier-prime-latin-ext-400-normal-CKOCNFvK.woff         9.04 kB
+#14 2.985 dist/assets/courier-prime-latin-ext-700-normal-BIFoAzHx.woff         9.28 kB
+#14 2.985 dist/assets/playfair-display-cyrillic-900-normal-C8kZZFQC.woff2     11.86 kB
+#14 2.985 dist/assets/playfair-display-latin-ext-900-normal-wdRhZY-D.woff2    12.65 kB
+#14 2.985 dist/assets/courier-prime-latin-ext-400-normal-B-EsvyE4.woff2       12.73 kB
+#14 2.985 dist/assets/courier-prime-latin-ext-700-normal-ByMJlNdM.woff2       12.92 kB
+#14 2.985 dist/assets/playfair-display-cyrillic-900-normal-sDNg_-Xm.woff      14.20 kB
+#14 2.985 dist/assets/courier-prime-latin-400-normal-BAlbUm6l.woff            14.38 kB
+#14 2.985 dist/assets/courier-prime-latin-700-normal-CVvp4Sof.woff            14.67 kB
+#14 2.985 dist/assets/anton-latin-400-normal-AUNGEG_V.woff                    15.63 kB
+#14 2.985 dist/assets/playfair-display-latin-ext-900-normal-Dl6M2jFN.woff     16.23 kB
+#14 2.985 dist/assets/anton-latin-400-normal-Byf51wtH.woff2                   18.61 kB
+#14 2.985 dist/assets/courier-prime-latin-400-normal-BbyBr73r.woff2           18.64 kB
+#14 2.985 dist/assets/courier-prime-latin-700-normal-D1YCjmaD.woff2           19.34 kB
+#14 2.985 dist/assets/playfair-display-latin-900-normal-oSb7_CWx.woff2        22.37 kB
+#14 2.985 dist/assets/special-elite-latin-ext-400-normal-ChcxYnmu.woff2       25.19 kB
+#14 2.985 dist/assets/playfair-display-latin-900-normal-DypQvTWf.woff         27.39 kB
+#14 2.985 dist/assets/anton-latin-ext-400-normal-BMODBQc6.woff                28.07 kB
+#14 2.985 dist/assets/special-elite-latin-ext-400-normal-CaJZjSVf.woff        29.99 kB
+#14 2.985 dist/assets/anton-latin-ext-400-normal-SyiqE2Jt.woff2               31.35 kB
+#14 2.985 dist/assets/special-elite-latin-400-normal-YjDd9tmf.woff2           53.29 kB
+#14 2.985 dist/assets/special-elite-latin-400-normal-BtSRmyJ6.woff            63.41 kB
+#14 2.985 dist/assets/index-Cnk1FMua.css                                      19.93 kB │ gzip:  5.00 kB
+#14 2.985 dist/assets/index-3QtWkAnp.js                                      316.99 kB │ gzip: 95.16 kB
+#14 2.985 
+#14 2.988 ✓ built in 565ms
+#14 DONE 3.2s
+
+#15 [stage-1 2/4] COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+#15 CACHED
+
+#16 [stage-1 3/4] COPY nginx/config.json.template /etc/nginx/templates/config.json.template
+#16 CACHED
+
+#17 [stage-1 4/4] COPY --from=build /app/dist /usr/share/nginx/html
+#17 DONE 0.1s
+
+#18 exporting to image
+#18 exporting layers
+#18 exporting layers 0.4s done
+#18 exporting manifest sha256:5d425e1673672900d2cc82cdff5e64ef1bad32fc87e84e0c50407b81d97c31dc 0.0s done
+#18 exporting config sha256:3249da4685aa2fecd3e187becfb37b55d1e4528fffd8dba94ded38f6b1127c09 0.0s done
+#18 exporting attestation manifest sha256:d9390ca12beb263d0e43b46c6fadfdab2cf865bdda94cf907779fa16bc02ff97
+#18 exporting attestation manifest sha256:d9390ca12beb263d0e43b46c6fadfdab2cf865bdda94cf907779fa16bc02ff97 0.0s done
+#18 exporting manifest list sha256:9bf159ed61af43945b93c741c84890ae513a53bd1ce636d9de46cf9b9d4c0895 0.0s done
+#18 naming to docker.io/library/supportops-console:check 0.0s done
+#18 unpacking to docker.io/library/supportops-console:check
+#18 unpacking to docker.io/library/supportops-console:check 0.2s done
+#18 DONE 0.9s
+fast: exit 0
+build: exit 0
+budget: exit 0
+e2e-offline: exit 0
+image: exit 0
+check-full: PASS. Offline browser e2e with axe contrast ran above; the real-stack e2e needs the root stack: python scripts/e2e.py.

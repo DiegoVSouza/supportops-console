@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { StatusSeal, WakeNotice, useElapsed, type GlyphKind } from "colagem-ui";
 
-const GLYPH: Record<string, string> = {
-  open: "○", queued: "○", running: "◐", needs_approval: "◐", pending: "◐",
-  succeeded: "●", done: "●", approved: "●", failed: "✕", rejected: "✕", expired: "✕",
+const GLYPH: Record<string, GlyphKind> = {
+  open: "none", queued: "none", running: "partial", needs_approval: "partial", pending: "partial",
+  succeeded: "full", done: "full", approved: "full", failed: "fail", rejected: "fail", expired: "fail",
 };
 const LABEL: Record<string, string> = {
   open: "aberto", queued: "na fila", running: "em execução", needs_approval: "aguarda aprovação",
@@ -10,23 +10,26 @@ const LABEL: Record<string, string> = {
   rejected: "rejeitado", expired: "expirado",
 };
 
+export const WAKE_LABELS = {
+  waking: (service: string, elapsed: number, expected: number) =>
+    `Acordando ${service}: ${elapsed} s de cerca de ${expected} s. Sem uso, o serviço dorme.`,
+  failed: (service: string) => `${service} não respondeu.`,
+  retry: "Tentar de novo",
+};
+
 export function Seal({ status }: { status: string }) {
-  return <span className="seal">{GLYPH[status] ?? "○"} {LABEL[status] ?? status}</span>;
+  return <StatusSeal kind={GLYPH[status] ?? "none"} label={LABEL[status] ?? status} />;
 }
 
 export function ErrorNote({ message }: { message: string }) {
-  return <p role="alert" className="alert">✕ {message}</p>;
+  return <p role="alert" className="alert"><span aria-hidden="true">✕ </span>{message}</p>;
 }
 
-export function Toast({ message, onClose }: { message: string; onClose: () => void }) {
-  useEffect(() => {
-    const timer = window.setTimeout(onClose, 5000);
-    return () => window.clearTimeout(timer);
-  }, [message, onClose]);
-  return (
-    <div className="toast" role="status">
-      <span>✓ {message}</span>
-      <button className="btn small ghost" onClick={onClose} aria-label="Fechar aviso">✕</button>
-    </div>
-  );
+const noop = () => undefined;
+
+/** Plain text first; after a few seconds explain that the Fly service may be waking (FE-003). */
+export function Loading({ service = "a API" }: { service?: string }) {
+  const elapsed = useElapsed(true);
+  if (elapsed < 4) return <p>carregando…</p>;
+  return <WakeNotice service={service} elapsed={elapsed} expected={20} onRetry={noop} labels={WAKE_LABELS} />;
 }

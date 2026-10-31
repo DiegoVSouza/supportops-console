@@ -1,12 +1,14 @@
-import "@fontsource/anton/400.css";
-import "@fontsource/courier-prime/400.css";
-import "@fontsource/courier-prime/700.css";
+import "colagem-ui/fonts.css";
+import "colagem-ui/plate-fonts.css";
+import "colagem-ui/tokens.css";
+import "colagem-ui/style.css";
+import "./styles/console.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Headline } from "colagem-ui";
 import { App } from "./App";
+import { ErrorNote } from "./components/Feedback";
 import { loadConfig } from "./config";
-import "./styles/tokens.css";
-import "./styles/console.css";
 
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
@@ -21,8 +23,8 @@ loadConfig()
   .catch(() =>
     root.render(
       <main className="wrap">
-        <h1 className="headline">Console indisponível</h1>
-        <p role="alert">Não foi possível carregar a configuração. Tente novamente em instantes.</p>
+        <Headline>Console indisponível</Headline>
+        <ErrorNote message="Não foi possível carregar a configuração. Tente novamente em instantes." />
       </main>,
     ),
   );

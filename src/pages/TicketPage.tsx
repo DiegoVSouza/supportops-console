@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { Button, Card, Field, Panel, SelectField, Toast } from "colagem-ui";
 import { describeError, type Api, type Task, type Ticket } from "../api/client";
-import { ErrorNote, Seal, Toast } from "../components/Feedback";
+import { ErrorNote, Loading, Seal } from "../components/Feedback";
 import { PageTitle } from "../components/Layout";
 
 const POLL_MS = 3000;
@@ -47,20 +48,27 @@ export function TicketPage({ api, id, canAct }: { api: Api; id: string; canAct: 
   }, [api, id]);
 
   if (error) return <><PageTitle>Ticket</PageTitle><ErrorNote message={error} /><p><a href="#/tickets">Voltar para tickets</a></p></>;
-  if (!ticket) return <p>carregando…</p>;
+  if (!ticket) return <Loading />;
   return (
     <>
       <p><a href="#/tickets">← Voltar para tickets</a></p>
       <PageTitle>{ticket.subject}</PageTitle>
-      <article className="card focus">
-        <Seal status={ticket.status ?? "open"} />
-        <p className="prewrap">{ticket.body}</p>
-        <p className="meta"><span>{new Date(ticket.created_at ?? "").toLocaleString("pt-BR")}</span><span className="tag">{ticket.customer_id}</span></p>
-      </article>
+      <Card
+        variant="focus"
+        index={1}
+        headingLevel={2}
+        label={`Ticket: ${ticket.subject}`}
+        seal={<Seal status={ticket.status ?? "open"} />}
+        title="Descrição"
+        meta={new Date(ticket.created_at ?? "").toLocaleString("pt-BR")}
+        tag={ticket.customer_id}
+      >
+        <p className="card-sum prewrap">{ticket.body}</p>
+      </Card>
       <Triage api={api} ticketId={id} canAct={canAct} taskId={taskId} onStarted={followTask} />
       {canAct && <Refund api={api} ticketId={id} onDone={setToast} onTask={followTask} />}
       {canAct && <Rating api={api} ticketId={id} onDone={setToast} />}
-      {toast && <Toast message={toast} onClose={closeToast} />}
+      {toast && <Toast kind="ok" onClose={closeToast} closeLabel="Fechar aviso">{toast}</Toast>}
     </>
   );
 }
@@ -113,14 +121,13 @@ function Triage({ api, ticketId, canAct, taskId, onStarted }: {
   const running = task !== null && !TERMINAL.has(task.status);
   const result = task?.result as { response?: string; citations?: Citation[]; approval_state?: string; refund?: { amount_cents?: number } } | null | undefined;
   return (
-    <section className="panel" aria-labelledby="triage-title">
-      <h2 id="triage-title" className="panel-title">Análise</h2>
+    <Panel title="Análise">
       {error && <ErrorNote message={error} />}
-      {canAct && <button className="btn" onClick={() => void start()} disabled={busy || running}>{task ? "Analisar novamente" : "Analisar ticket"}</button>}
+      {canAct && <Button onClick={() => void start()} disabled={busy || running} disabledReason={running ? "A análise está em andamento." : undefined}>{task ? "Analisar novamente" : "Analisar ticket"}</Button>}
       {!task && !taskId && <p className="muted">Nenhuma análise nesta sessão.</p>}
       <div aria-live="polite">
         {task && <p><Seal status={task.status} /></p>}
-        {task?.error && <p className="alert">✕ Falha: {task.error}</p>}
+        {task?.error && <ErrorNote message={`Falha: ${task.error}`} />}
         {result?.response && <p className="lead prewrap">{result.response}</p>}
         {task?.status === "needs_approval" && <p>Reembolso aguardando decisão. A tarefa continua depois que um aprovador decidir.</p>}
         {result?.refund && <p>✓ Reembolso simulado registrado.</p>}
@@ -136,7 +143,7 @@ function Triage({ api, ticketId, canAct, taskId, onStarted }: {
           </ul>
         </>
       )}
-    </section>
+    </Panel>
   );
 }
 
@@ -168,14 +175,11 @@ function Refund({ api, ticketId, onDone, onTask }: {
   }
 
   return (
-    <form className="panel" onSubmit={(event) => void submit(event)}>
-      <h2 className="panel-title">Solicitar reembolso</h2>
+    <Panel as="form" title="Solicitar reembolso" onSubmit={(event) => void submit(event)}>
       {error && <ErrorNote message={error} />}
-      <label htmlFor="amount_cents">Valor em centavos (1 a 5000)</label>
-      <input id="amount_cents" name="amount_cents" type="number" min={1} max={5000} required />
-      <p className="muted">Um aprovador decide. Aprovado, o reembolso é executado no valor pedido. A autorização vale 15 minutos.</p>
-      <button className="btn ghost">Pedir aprovação</button>
-    </form>
+      <Field label="Valor em centavos (1 a 5000)" name="amount_cents" type="number" min={1} max={5000} required hint="Um aprovador decide. Aprovado, o reembolso é executado no valor pedido. A autorização vale 15 minutos." />
+      <Button type="submit" variant="secondary">Pedir aprovação</Button>
+    </Panel>
   );
 }
 
@@ -200,16 +204,13 @@ function Rating({ api, ticketId, onDone }: { api: Api; ticketId: string; onDone:
   }
 
   return (
-    <form className="panel" onSubmit={(event) => void submit(event)}>
-      <h2 className="panel-title">Avaliar atendimento</h2>
+    <Panel as="form" title="Avaliar atendimento" onSubmit={(event) => void submit(event)}>
       {error && <ErrorNote message={error} />}
-      <label htmlFor="rating">Nota</label>
-      <select id="rating" name="rating" defaultValue="5">
+      <SelectField label="Nota" name="rating" defaultValue="5">
         {[5, 4, 3, 2, 1].map((value) => <option key={value} value={value}>{value}</option>)}
-      </select>
-      <label htmlFor="comment">Comentário</label>
-      <textarea id="comment" name="comment" maxLength={1000} rows={2} />
-      <button className="btn ghost">Enviar avaliação</button>
-    </form>
+      </SelectField>
+      <Field label="Comentário" name="comment" multiline maxLength={1000} />
+      <Button type="submit" variant="secondary">Enviar avaliação</Button>
+    </Panel>
   );
 }

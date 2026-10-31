@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
+import { Button, DataTable, EmptyState, Toast } from "colagem-ui";
 import { describeError, formatCents, type Api, type Approval } from "../api/client";
-import { ErrorNote, Toast } from "../components/Feedback";
+import { ErrorNote, Loading } from "../components/Feedback";
 import { PageTitle } from "../components/Layout";
 
 type Decision = "approved" | "rejected";
@@ -39,48 +40,43 @@ export function ApprovalsPage({ api, canApprove }: { api: Api; canApprove: boole
     <>
       <PageTitle>Aprovações</PageTitle>
       {error && <ErrorNote message={error} />}
-      {approvals === null && !error && <p>carregando…</p>}
-      {approvals?.length === 0 && <div className="card empty"><span className="ghost-number" aria-hidden="true">00</span><p>Nenhuma aprovação pendente.</p></div>}
+      {approvals === null && !error && <Loading />}
+      {approvals?.length === 0 && <EmptyState numeral="00" text="Nenhuma aprovação pendente." />}
       {approvals && approvals.length > 0 && (
-        <div className="table-wrap">
-          <table>
-            <caption className="sr">Reembolsos aguardando decisão</caption>
-            <thead>
-              <tr><th scope="col">Ticket</th><th scope="col">Ação</th><th scope="col" className="num">Valor</th><th scope="col">Solicitante</th><th scope="col">Decisão</th></tr>
-            </thead>
-            <tbody>
-              {approvals.map((approval) => {
-                const confirming = pending?.id === approval.id ? pending.decision : null;
-                const amount = formatCents(approval.amount_cents);
-                return (
-                  <tr key={approval.id}>
-                    <td><a href={`#/tickets/${encodeURIComponent(approval.ticket_id)}`}>Abrir ticket</a></td>
-                    <td>{approval.action === "issue_refund" ? "Reembolso" : approval.action}</td>
-                    <td className="num">{amount}</td>
-                    <td>{approval.requested_by}</td>
-                    <td className="actions">
-                      {confirming ? (
-                        <>
-                          <button className="btn small" onClick={() => void decide(approval.id, confirming)}>
-                            Confirmar {confirming === "approved" ? "aprovação" : "rejeição"} de {amount}
-                          </button>
-                          <button className="btn small ghost" onClick={() => setPending(null)}>Cancelar</button>
-                        </>
-                      ) : (
-                        <>
-                          <button className="btn small" aria-label={`Aprovar reembolso de ${amount}`} onClick={() => setPending({ id: approval.id, decision: "approved" })}>Aprovar</button>
-                          <button className="btn small danger" aria-label={`Rejeitar reembolso de ${amount}`} onClick={() => setPending({ id: approval.id, decision: "rejected" })}>✕ Rejeitar</button>
-                        </>
-                      )}
-                    </td>
-                  </tr>
+        <DataTable<Approval>
+          caption="Reembolsos aguardando decisão"
+          rowKey={(approval) => approval.id}
+          rows={approvals}
+          columns={[
+            { key: "ticket", label: "Ticket", render: (a) => <a href={`#/tickets/${encodeURIComponent(a.ticket_id)}`}>Abrir ticket</a> },
+            { key: "action", label: "Ação", render: (a) => (a.action === "issue_refund" ? "Reembolso" : a.action) },
+            { key: "amount", label: "Valor", numeric: true, render: (a) => formatCents(a.amount_cents) },
+            { key: "by", label: "Solicitante", render: (a) => a.requested_by },
+            {
+              key: "decision",
+              label: "Decisão",
+              render: (a) => {
+                const confirming = pending?.id === a.id ? pending.decision : null;
+                const amount = formatCents(a.amount_cents);
+                return confirming ? (
+                  <span className="actions">
+                    <Button size="sm" onClick={() => void decide(a.id, confirming)}>
+                      Confirmar {confirming === "approved" ? "aprovação" : "rejeição"} de {amount}
+                    </Button>
+                    <Button size="sm" variant="secondary" onClick={() => setPending(null)}>Cancelar</Button>
+                  </span>
+                ) : (
+                  <span className="actions">
+                    <Button size="sm" aria-label={`Aprovar reembolso de ${amount}`} onClick={() => setPending({ id: a.id, decision: "approved" })}>Aprovar</Button>
+                    <Button size="sm" variant="danger" aria-label={`Rejeitar reembolso de ${amount}`} onClick={() => setPending({ id: a.id, decision: "rejected" })}>Rejeitar</Button>
+                  </span>
                 );
-              })}
-            </tbody>
-          </table>
-        </div>
+              },
+            },
+          ]}
+        />
       )}
-      {toast && <Toast message={toast} onClose={closeToast} />}
+      {toast && <Toast kind="ok" onClose={closeToast} closeLabel="Fechar aviso">{toast}</Toast>}
     </>
   );
 }

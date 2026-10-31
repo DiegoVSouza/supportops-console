@@ -37,6 +37,20 @@
       ],
       "status": "PASS_LOCAL_AND_FLY_DEMO",
       "evidence": ".planning/phases/002-blockers/VERIFY.md"
+    },
+    {
+      "id": "console-design-system",
+      "description": "UI on colagem-ui level 0, cross-origin API base, wake notice, Pages output",
+      "requirement_ids": [
+        "DS-001",
+        "DS-003",
+        "FE-001",
+        "FE-002",
+        "FE-003",
+        "A11Y-001"
+      ],
+      "status": "PASS_LOCAL_OFFLINE_BROWSER; REAL_STACK_E2E_PENDING; PAGES_DEPLOY_PENDING",
+      "evidence": ".planning/phases/003-colagem-ui/VERIFY.md"
     }
   ]
 }

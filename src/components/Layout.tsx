@@ -1,21 +1,10 @@
-import { useEffect, useRef, type ReactNode } from "react";
+import type { ReactNode } from "react";
+import { AppFooter, AppHeader, Button, Headline, Plate, SkipLink } from "colagem-ui";
 import type { Session } from "../auth";
 import type { Route } from "../useRoute";
 
-const KITS = ["k0", "k1", "k2"];
-
 export function Logo() {
-  const name = "SUPPORTOPS";
-  return (
-    <span className="logo">
-      <span className="sr">SupportOps</span>
-      <span aria-hidden="true" className="logo-letters">
-        {[...name].map((letter, index) => (
-          <span key={index} className={KITS[index % 3]}>{letter}</span>
-        ))}
-      </span>
-    </span>
-  );
+  return <Plate text="SUPPORTOPS" size="logo" />;
 }
 
 export function Layout({ session, route, canApprove, onSignOut, children }: {
@@ -27,29 +16,27 @@ export function Layout({ session, route, canApprove, onSignOut, children }: {
 }) {
   return (
     <>
-      <a className="skip" href="#content" onClick={(event) => {
-        event.preventDefault();
-        document.getElementById("content")?.focus();
-      }}>Pular para o conteúdo</a>
-      <header className="top">
-        <a href="#/tickets" className="brand"><Logo /></a>
-        <nav aria-label="Principal">
-          <a href="#/tickets" aria-current={route.name !== "approvals" ? "page" : undefined}>Tickets</a>
-          {canApprove && <a href="#/approvals" aria-current={route.name === "approvals" ? "page" : undefined}>Aprovações</a>}
-        </nav>
-        <div className="who">
-          <span>{session.username} · {session.tenant}</span>
-          <button className="btn small ghost" onClick={onSignOut}>Sair</button>
-        </div>
-      </header>
+      <SkipLink href="#content">Pular para o conteúdo</SkipLink>
+      <AppHeader
+        brand={<Logo />}
+        brandHref="#/tickets"
+        navLabel="Principal"
+        nav={
+          <>
+            <a href="#/tickets" aria-current={route.name !== "approvals" ? "page" : undefined}>Tickets</a>
+            {canApprove && <a href="#/approvals" aria-current={route.name === "approvals" ? "page" : undefined}>Aprovações</a>}
+          </>
+        }
+      >
+        <span className="who">{session.username} · {session.tenant}</span>
+        <Button size="sm" variant="secondary" onClick={onSignOut}>Sair</Button>
+      </AppHeader>
       <main id="content" tabIndex={-1} className="wrap">{children}</main>
-      <footer className="foot">SupportOps Console · decisões sensíveis passam por aprovação humana</footer>
+      <AppFooter>SupportOps Console · decisões sensíveis passam por aprovação humana</AppFooter>
     </>
   );
 }
 
 export function PageTitle({ children }: { children: ReactNode }) {
-  const ref = useRef<HTMLHeadingElement>(null);
-  useEffect(() => ref.current?.focus(), []);
-  return <h1 ref={ref} tabIndex={-1} className="headline">{children}</h1>;
+  return <Headline focusOnMount>{children}</Headline>;
 }

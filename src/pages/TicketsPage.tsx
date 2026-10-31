@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, type FormEvent } from "react";
+import { Button, Card, EmptyState, Field, Panel } from "colagem-ui";
 import { describeError, type Api, type Ticket } from "../api/client";
-import { ErrorNote, Seal } from "../components/Feedback";
+import { ErrorNote, Loading, Seal } from "../components/Feedback";
 import { PageTitle } from "../components/Layout";
 
 export function TicketsPage({ api, canWrite }: { api: Api; canWrite: boolean }) {
@@ -21,25 +22,28 @@ export function TicketsPage({ api, canWrite }: { api: Api; canWrite: boolean }) 
       <PageTitle>Tickets</PageTitle>
       {error && <ErrorNote message={error} />}
       <div className={canWrite ? "split" : undefined}>
-      {canWrite && <NewTicket api={api} onCreated={load} />}
-      <div>
-      {tickets === null && !error && <p>carregando…</p>}
-      {tickets?.length === 0 && (
-        <div className="card empty"><span className="ghost-number" aria-hidden="true">00</span><p>Nenhum ticket neste tenant ainda.</p></div>
-      )}
-      <ul className="items">
-        {newest.map((ticket) => (
-          <li key={ticket.id}>
-            <article className="card">
-              <Seal status={ticket.status ?? "open"} />
-              <h2 className="card-title"><a href={`#/tickets/${encodeURIComponent(ticket.id ?? "")}`}>{ticket.subject}</a></h2>
-              <p className="muted clamp">{ticket.body}</p>
-              <p className="meta"><span>{new Date(ticket.created_at ?? "").toLocaleString("pt-BR")}</span><span className="tag">{ticket.customer_id}</span></p>
-            </article>
-          </li>
-        ))}
-      </ul>
-      </div>
+        {canWrite && <NewTicket api={api} onCreated={load} />}
+        <div>
+          {tickets === null && !error && <Loading />}
+          {tickets?.length === 0 && <EmptyState numeral="00" text="Nenhum ticket neste tenant ainda." />}
+          <ul className="items">
+            {newest.map((ticket, index) => (
+              <li key={ticket.id}>
+                <Card
+                  index={index}
+                  headingLevel={2}
+                  label={`Ticket: ${ticket.subject}`}
+                  seal={<Seal status={ticket.status ?? "open"} />}
+                  title={<a className="card-link" href={`#/tickets/${encodeURIComponent(ticket.id ?? "")}`}>{ticket.subject}</a>}
+                  summary={ticket.body}
+                  clamp
+                  meta={new Date(ticket.created_at ?? "").toLocaleString("pt-BR")}
+                  tag={ticket.customer_id}
+                />
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   );
@@ -72,16 +76,12 @@ function NewTicket({ api, onCreated }: { api: Api; onCreated: () => Promise<void
   }
 
   return (
-    <form className="panel" onSubmit={(event) => void submit(event)}>
-      <h2 className="panel-title">Novo ticket</h2>
+    <Panel as="form" title="Novo ticket" onSubmit={(event) => void submit(event)}>
       {error && <ErrorNote message={error} />}
-      <label htmlFor="customer_id">Cliente</label>
-      <input id="customer_id" name="customer_id" required maxLength={100} />
-      <label htmlFor="subject">Assunto</label>
-      <input id="subject" name="subject" required maxLength={200} />
-      <label htmlFor="body">Descrição</label>
-      <textarea id="body" name="body" required maxLength={10000} rows={4} />
-      <button className="btn" disabled={busy}>{busy ? "Enviando…" : "Criar ticket"}</button>
-    </form>
+      <Field label="Cliente" name="customer_id" required maxLength={100} />
+      <Field label="Assunto" name="subject" required maxLength={200} />
+      <Field label="Descrição" name="body" multiline required maxLength={10000} />
+      <Button type="submit" disabled={busy}>{busy ? "Enviando…" : "Criar ticket"}</Button>
+    </Panel>
   );
 }

@@ -8,4 +8,5 @@
 - Tokens stay in `sessionStorage`, so a reload keeps the session. The CSP forbids inline and third-party script, and access tokens live five minutes.
 - Scopes: the token requests every scope because Keycloak scopes belong to the client. P05 intersects them with the role, per its ADR-010, so the UI still hides actions but is not the control.
 - Fonts are self-hosted through Fontsource, so no third-party origin is contacted at runtime.
-- API runs same-origin through nginx, so P05 gains no CORS surface.
+- API runs same-origin through nginx in the local stack image, so P05 needs no CORS there. **Superseded for the public deployment** by lab ADR-001 (`docs/decisions/` in the lab): the console is static on Cloudflare Pages and calls the Fly P05 API and Keycloak cross-origin, so `apiBaseUrl` in `config.json` selects the origin and P05 needs `CORS_ALLOWED_ORIGINS` (lab phase F4). The nginx image keeps working unchanged.
+- Design system: all UI comes from the pinned `colagem-ui` package (level 0, `docs/harness/sources.lock.json`); this repository holds layout only, and a test fails on a color literal or `border-radius`.
