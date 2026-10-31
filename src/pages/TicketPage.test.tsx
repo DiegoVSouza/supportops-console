@@ -35,7 +35,7 @@ describe("TicketPage", () => {
     const { api } = fakeApi(route({ id: "task-1", status: "needs_approval", attempts: 1, result: { response: "Proposto", approval_state: "pending" } }));
     render(<TicketPage api={api} id="t-1" canAct />);
     await userEvent.click(await screen.findByRole("button", { name: "Analisar ticket" }));
-    expect(await screen.findByText(/depois da decisão de um aprovador/)).toBeTruthy();
+    expect(await screen.findByText(/depois que um aprovador decidir/)).toBeTruthy();
   });
 
   it("restores the task of this session after a reload", async () => {
@@ -62,6 +62,28 @@ describe("TicketPage", () => {
     const keys = requests.filter((request) => request.url.endsWith("/refund-approvals")).map((request) => request.headers.get("Idempotency-Key"));
     expect(keys).toHaveLength(2);
     expect(keys[0]).toBe(keys[1]);
+  });
+
+  it("follows the durable task of a manual refund", async () => {
+    const base = route({ id: "task-9", status: "needs_approval", attempts: 0, result: null });
+    const { api, requests } = fakeApi((request) =>
+      request.url.endsWith("/refund-approvals")
+        ? json({ id: "a-1", state: "pending", action: "issue_refund", task_id: "task-9" }, 202)
+        : base(request));
+    render(<TicketPage api={api} id="t-1" canAct />);
+    const user = userEvent.setup();
+    await user.type(await screen.findByLabelText(/Valor em centavos/), "1200");
+    await user.click(screen.getByRole("button", { name: "Pedir aprovação" }));
+    expect(await screen.findByText(/depois que um aprovador decidir/)).toBeTruthy();
+    expect(requests.some((request) => request.url.endsWith("/v1/tasks/task-9"))).toBe(true);
+    expect(window.sessionStorage.getItem("triage-task:t-1")).toBe("task-9");
+  });
+
+  it("states a rejected refund", async () => {
+    window.sessionStorage.setItem("triage-task:t-1", "task-1");
+    const { api } = fakeApi(route({ id: "task-1", status: "succeeded", attempts: 1, result: { approval_state: "rejected" } }));
+    render(<TicketPage api={api} id="t-1" canAct />);
+    expect(await screen.findByText(/rejeitado pelo aprovador/)).toBeTruthy();
   });
 
   it("does not offer agent actions to an approver", async () => {

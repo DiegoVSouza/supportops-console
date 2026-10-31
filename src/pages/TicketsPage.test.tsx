@@ -10,6 +10,7 @@ describe("TicketsPage", () => {
     const { container } = render(<TicketsPage api={api} canWrite />);
     expect(await screen.findByRole("link", { name: "Dúvida na fatura" })).toHaveProperty("hash", "#/tickets/t-1");
     expect(requests[0]?.headers.get("Authorization")).toBe("Bearer test-token");
+    expect(requests[0]?.headers.get("traceparent")).toMatch(/^00-[0-9a-f]{32}-[0-9a-f]{16}-01$/);
     expect(await axeViolations(container)).toEqual([]);
   });
 

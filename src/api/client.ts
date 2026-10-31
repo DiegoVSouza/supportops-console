@@ -6,11 +6,16 @@ export type Task = components["schemas"]["TaskView"];
 export type Approval = components["schemas"]["ApprovalView"];
 export type Api = ReturnType<typeof createApi>;
 
+function randomHex(bytes: number): string {
+  return Array.from(crypto.getRandomValues(new Uint8Array(bytes)), (value) => value.toString(16).padStart(2, "0")).join("");
+}
+
 export function createApi(baseUrl: string, getToken: () => string, onUnauthorized: () => void, fetcher?: typeof fetch) {
   const client = createClient<paths>({ baseUrl, ...(fetcher ? { fetch: fetcher } : {}) });
   client.use({
     onRequest({ request }) {
       request.headers.set("Authorization", `Bearer ${getToken()}`);
+      request.headers.set("traceparent", `00-${randomHex(16)}-${randomHex(8)}-01`);
       return request;
     },
     onResponse({ response }) {

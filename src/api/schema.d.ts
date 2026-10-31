@@ -290,6 +290,8 @@ export interface components {
             state: string;
             /** Action */
             action: string;
+            /** Task Id */
+            task_id?: string | null;
         };
         /** RefundRequest */
         RefundRequest: {

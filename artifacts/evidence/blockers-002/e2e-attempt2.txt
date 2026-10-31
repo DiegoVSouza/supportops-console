@@ -1,0 +1,9 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 e2e\console.spec.ts:24:1 › agent and approver complete a refund, and tenants stay apart (20.8s)
+  ✓  2 e2e\console.spec.ts:72:1 › a manual refund runs after approval, with the requested amount (8.6s)
+  ✓  3 e2e\console.spec.ts:101:1 › narrow screen keeps the console usable (3.1s)
+
+  3 passed (34.3s)
+exit=0

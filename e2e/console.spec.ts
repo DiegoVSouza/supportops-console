@@ -69,6 +69,35 @@ test("agent and approver complete a refund, and tenants stay apart", async ({ br
   expect(cspErrors).toEqual([]);
 });
 
+test("a manual refund runs after approval, with the requested amount", async ({ browser }) => {
+  const stamp = Date.now();
+  const cents = 1000 + (stamp % 3999);
+  const amount = (cents / 100).toFixed(2).replace(".", ",");
+  const subject = `E2E manual ${stamp}`;
+  const agent = await (await browser.newContext({ ignoreHTTPSErrors: true })).newPage();
+  await signIn(agent, "agent-a", password("E2E_AGENT_A_PASSWORD"));
+  await agent.getByLabel("Cliente").fill("customer-a");
+  await agent.getByLabel("Assunto").fill(subject);
+  await agent.getByLabel("Descrição").fill("Customer asked for a goodwill credit.");
+  await agent.getByRole("button", { name: "Criar ticket" }).click();
+  await agent.getByRole("link", { name: subject }).click();
+  await agent.getByLabel(/Valor em centavos/).fill(String(cents));
+  await agent.getByRole("button", { name: "Pedir aprovação" }).click();
+  await expect(agent.getByText("aguarda aprovação").last()).toBeVisible({ timeout: 30_000 });
+
+  const approver = await (await browser.newContext({ ignoreHTTPSErrors: true })).newPage();
+  await signIn(approver, "approver-a", password("E2E_APPROVER_A_PASSWORD"));
+  await approver.getByRole("link", { name: "Aprovações" }).click();
+  await approver.getByRole("button", { name: `Aprovar reembolso de ${amount}` }).click();
+  await approver.getByRole("button", { name: `Confirmar aprovação de ${amount}` }).click();
+  await expect(approver.getByRole("status")).toContainText("Reembolso aprovado");
+
+  await expect(async () => {
+    await agent.reload();
+    await expect(agent.getByText("Reembolso simulado registrado")).toBeVisible({ timeout: 3_000 });
+  }).toPass({ timeout: 60_000 });
+});
+
 test("narrow screen keeps the console usable", async ({ browser }) => {
   const context = await browser.newContext({ ignoreHTTPSErrors: true, viewport: { width: 360, height: 740 } });
   const page = await context.newPage();

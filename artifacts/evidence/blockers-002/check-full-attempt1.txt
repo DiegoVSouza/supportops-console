@@ -1,0 +1,135 @@
+contract: PASS (P05 0.4.5)
+
+ RUN  v5.0.5 C:/estudo/Golpe/lab/projects/p06
+
+Not implemented: HTMLCanvasElement's getContext() method: without installing the canvas npm package
+
+ Test Files  5 passed (5)
+      Tests  20 passed (20)
+   Start at  01:26:33
+   Duration  4.38s (environment 60%, tests 15%, setup 15%, import 7%, transform 2%, worker 1%)
+
+lint: exit 0
+typecheck: exit 0
+contract:check: exit 0
+test: exit 0
+check-fast: OK
+[36mvite v8.3.5 [32mbuilding client environment for production...[36m[39m
+transforming...
+✓ 32 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                                                  0.59 kB │ gzip:  0.35 kB
+dist/assets/anton-vietnamese-400-normal-2FfR1wHA.woff            6.82 kB
+dist/assets/anton-vietnamese-400-normal-CkBxLiRJ.woff2           8.68 kB
+dist/assets/courier-prime-latin-ext-400-normal-CKOCNFvK.woff     9.04 kB
+dist/assets/courier-prime-latin-ext-700-normal-BIFoAzHx.woff     9.28 kB
+dist/assets/courier-prime-latin-ext-400-normal-B-EsvyE4.woff2   12.73 kB
+dist/assets/courier-prime-latin-ext-700-normal-ByMJlNdM.woff2   12.92 kB
+dist/assets/courier-prime-latin-400-normal-BAlbUm6l.woff        14.38 kB
+dist/assets/courier-prime-latin-700-normal-CVvp4Sof.woff        14.67 kB
+dist/assets/anton-latin-400-normal-AUNGEG_V.woff                15.63 kB
+dist/assets/anton-latin-400-normal-Byf51wtH.woff2               18.61 kB
+dist/assets/courier-prime-latin-400-normal-BbyBr73r.woff2       18.64 kB
+dist/assets/courier-prime-latin-700-normal-D1YCjmaD.woff2       19.34 kB
+dist/assets/anton-latin-ext-400-normal-BMODBQc6.woff            28.07 kB
+dist/assets/anton-latin-ext-400-normal-SyiqE2Jt.woff2           31.35 kB
+dist/assets/index-_4vtZ2eD.css                                   9.04 kB │ gzip:  2.65 kB
+dist/assets/index-CpmGnCuB.js                                  311.63 kB │ gzip: 92.68 kB
+
+[32m✓ built in 197ms[39m
+budget: PASS (89.7 KB gzip of 120 KB)
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 778B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+#3 DONE 0.1s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 105B done
+#4 DONE 0.0s
+
+#5 [stage-1 1/4] FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6
+#5 resolve docker.io/nginxinc/nginx-unprivileged:1.29-alpine@sha256:0c79d56aee561a1d81c63f00eee5fb5fe29279560cdc55e91425133104c7fbe6 0.0s done
+#5 DONE 0.0s
+
+#6 [build 1/7] FROM docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85
+#6 resolve docker.io/library/node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 0.0s done
+#6 DONE 0.0s
+
+#7 [internal] load build context
+#7 transferring context: 38.81kB 0.0s done
+#7 DONE 0.0s
+
+#8 [build 4/7] RUN npm ci --ignore-scripts
+#8 CACHED
+
+#9 [build 2/7] WORKDIR /app
+#9 CACHED
+
+#10 [build 3/7] COPY package.json package-lock.json ./
+#10 CACHED
+
+#11 [build 5/7] COPY index.html tsconfig.json vite.config.ts ./
+#11 CACHED
+
+#12 [build 6/7] COPY src ./src
+#12 DONE 0.0s
+
+#13 [build 7/7] RUN npx vite build
+#13 1.908 vite v8.3.5 building client environment for production...
+#13 1.930 transforming...
+#13 2.042 ✓ 32 modules transformed.
+#13 2.127 rendering chunks...
+#13 2.193 computing gzip size...
+#13 2.199 dist/index.html                                                  0.59 kB │ gzip:  0.35 kB
+#13 2.199 dist/assets/anton-vietnamese-400-normal-2FfR1wHA.woff            6.82 kB
+#13 2.199 dist/assets/anton-vietnamese-400-normal-CkBxLiRJ.woff2           8.68 kB
+#13 2.199 dist/assets/courier-prime-latin-ext-400-normal-CKOCNFvK.woff     9.04 kB
+#13 2.199 dist/assets/courier-prime-latin-ext-700-normal-BIFoAzHx.woff     9.28 kB
+#13 2.199 dist/assets/courier-prime-latin-ext-400-normal-B-EsvyE4.woff2   12.73 kB
+#13 2.199 dist/assets/courier-prime-latin-ext-700-normal-ByMJlNdM.woff2   12.92 kB
+#13 2.199 dist/assets/courier-prime-latin-400-normal-BAlbUm6l.woff        14.38 kB
+#13 2.199 dist/assets/courier-prime-latin-700-normal-CVvp4Sof.woff        14.67 kB
+#13 2.199 dist/assets/anton-latin-400-normal-AUNGEG_V.woff                15.63 kB
+#13 2.199 dist/assets/anton-latin-400-normal-Byf51wtH.woff2               18.61 kB
+#13 2.199 dist/assets/courier-prime-latin-400-normal-BbyBr73r.woff2       18.64 kB
+#13 2.199 dist/assets/courier-prime-latin-700-normal-D1YCjmaD.woff2       19.34 kB
+#13 2.199 dist/assets/anton-latin-ext-400-normal-BMODBQc6.woff            28.07 kB
+#13 2.199 dist/assets/anton-latin-ext-400-normal-SyiqE2Jt.woff2           31.35 kB
+#13 2.199 dist/assets/index-_4vtZ2eD.css                                   9.04 kB │ gzip:  2.65 kB
+#13 2.199 dist/assets/index-CpmGnCuB.js                                  311.63 kB │ gzip: 92.68 kB
+#13 2.199 
+#13 2.200 ✓ built in 289ms
+#13 DONE 2.3s
+
+#14 [stage-1 2/4] COPY nginx/default.conf.template /etc/nginx/templates/default.conf.template
+#14 CACHED
+
+#15 [stage-1 3/4] COPY nginx/config.json.template /etc/nginx/templates/config.json.template
+#15 CACHED
+
+#16 [stage-1 4/4] COPY --from=build /app/dist /usr/share/nginx/html
+#16 DONE 0.0s
+
+#17 exporting to image
+#17 exporting layers 0.1s done
+#17 exporting manifest sha256:41893e824f612da8279661631549a79a50c167e150617b2d9e71d85ff9542516 0.0s done
+#17 exporting config sha256:12136519015f4b561959f58919e0b03d146bbedf5ad7b740797a056e889708b2 0.0s done
+#17 exporting attestation manifest sha256:b8adb057992645f5fc13cf1f6db06f2ddbfa3e04fc4b17911229115772ea9289 0.0s done
+#17 exporting manifest list sha256:af382d2b5b3492c74243bc5e28f04fc3bb408e8b175ca109c97ec866d7f7f73c 0.0s done
+#17 naming to docker.io/library/supportops-console:check done
+#17 unpacking to docker.io/library/supportops-console:check 0.1s done
+#17 DONE 0.3s
+fast: exit 0
+build: exit 0
+budget: exit 0
+image: exit 0
+check-full: PASS. Browser e2e and axe need the root stack: run npm run e2e, see README.
+exit=0

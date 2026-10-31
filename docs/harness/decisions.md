@@ -6,5 +6,6 @@
 - Contract: pinned copy of P05's `openapi.yaml`; `src/api/schema.d.ts` is generated. Endpoints come from the contract only.
 - Budget: 120 KB gzip initial JS. Level 0 of the design system suggests 100 KB; `oidc-client-ts` accounts for the difference.
 - Tokens stay in `sessionStorage`, so a reload keeps the session. The CSP forbids inline and third-party script, and access tokens live five minutes.
+- Scopes: the token requests every scope because Keycloak scopes belong to the client. P05 intersects them with the role, per its ADR-010, so the UI still hides actions but is not the control.
 - Fonts are self-hosted through Fontsource, so no third-party origin is contacted at runtime.
 - API runs same-origin through nginx, so P05 gains no CORS surface.

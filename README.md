@@ -44,7 +44,7 @@ The same image runs locally and on Fly. nginx renders these at start:
 | `OIDC_ORIGIN` | Keycloak origin, allowed in the CSP |
 | `OIDC_CLIENT_ID` | Public client, applied by `ops/stack/idp_clients.py` |
 
-`/healthz` answers liveness. `/readyz` passes P05 readiness through, so it fails when P05, PostgreSQL or Redis is down. Access logs are JSON on stdout.
+`/healthz` answers liveness. `/readyz` passes P05 readiness through, so it fails when P05, PostgreSQL or Redis is down. Access logs are JSON on stdout. Port 8081 serves `stub_status` for the metrics exporter and is not published. Each API call sends a W3C `traceparent`, so traces start in the browser.
 
 ## Results
 

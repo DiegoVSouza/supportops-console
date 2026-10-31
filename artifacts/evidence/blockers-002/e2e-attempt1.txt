@@ -1,0 +1,40 @@
+
+Running 3 tests using 1 worker
+
+  ✓  1 e2e\console.spec.ts:24:1 › agent and approver complete a refund, and tenants stay apart (18.2s)
+  ✘  2 e2e\console.spec.ts:72:1 › a manual refund runs after approval, with the requested amount (1.1m)
+  ✓  3 e2e\console.spec.ts:101:1 › narrow screen keeps the console usable (3.4s)
+
+
+  1) e2e\console.spec.ts:72:1 › a manual refund runs after approval, with the requested amount ─────
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: getByText('Reembolso simulado registrado')
+    Expected: visible
+    Timeout: 3000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" getByText('Reembolso simulado registrado') with timeout 3000ms
+      - waiting for getByText('Reembolso simulado registrado')
+
+
+    Call Log:
+    - Timeout 60000ms exceeded while waiting on the predicate
+
+       96 |     await agent.reload();
+       97 |     await expect(agent.getByText("Reembolso simulado registrado")).toBeVisible({ timeout: 3_000 });
+    >  98 |   }).toPass({ timeout: 60_000 });
+          |      ^
+       99 | });
+      100 |
+      101 | test("narrow screen keeps the console usable", async ({ browser }) => {
+        at C:\estudo\Golpe\lab\projects\p06\e2e\console.spec.ts:98:6
+
+    Error Context: test-results\console-a-manual-refund-ru-32eb0-l-with-the-requested-amount\error-context.md
+
+  1 failed
+    e2e\console.spec.ts:72:1 › a manual refund runs after approval, with the requested amount ──────
+  2 passed (1.5m)
+exit=1

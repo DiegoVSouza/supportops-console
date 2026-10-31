@@ -3,6 +3,14 @@ log_format console_json escape=json
   '"bytes":$body_bytes_sent,"duration":$request_time,"upstream_duration":"$upstream_response_time"}';
 
 server {
+  listen 8081;
+  access_log off;
+  location = /stub_status {
+    stub_status;
+  }
+}
+
+server {
   listen 8080;
   server_name _;
   root /usr/share/nginx/html;

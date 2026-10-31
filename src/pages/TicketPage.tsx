@@ -20,11 +20,24 @@ function readStoredTask(ticketId: string): string | null {
   }
 }
 
+function storeTask(ticketId: string, id: string) {
+  try {
+    window.sessionStorage.setItem(taskKey(ticketId), id);
+  } catch {
+    // Only the reload convenience is lost when storage is blocked.
+  }
+}
+
 export function TicketPage({ api, id, canAct }: { api: Api; id: string; canAct: boolean }) {
   const [ticket, setTicket] = useState<Ticket | null>(null);
   const [error, setError] = useState("");
   const [toast, setToast] = useState("");
+  const [taskId, setTaskId] = useState(() => readStoredTask(id));
   const closeToast = useCallback(() => setToast(""), []);
+  const followTask = useCallback((task: string) => {
+    storeTask(id, task);
+    setTaskId(task);
+  }, [id]);
 
   useEffect(() => {
     void api.GET("/v1/tickets/{ticket_id}", { params: { path: { ticket_id: id } } }).then(({ data, error: failure, response }) => {
@@ -44,16 +57,21 @@ export function TicketPage({ api, id, canAct }: { api: Api; id: string; canAct: 
         <p className="prewrap">{ticket.body}</p>
         <p className="meta"><span>{new Date(ticket.created_at ?? "").toLocaleString("pt-BR")}</span><span className="tag">{ticket.customer_id}</span></p>
       </article>
-      <Triage api={api} ticketId={id} canAct={canAct} />
-      {canAct && <Refund api={api} ticketId={id} onDone={setToast} />}
+      <Triage api={api} ticketId={id} canAct={canAct} taskId={taskId} onStarted={followTask} />
+      {canAct && <Refund api={api} ticketId={id} onDone={setToast} onTask={followTask} />}
       {canAct && <Rating api={api} ticketId={id} onDone={setToast} />}
       {toast && <Toast message={toast} onClose={closeToast} />}
     </>
   );
 }
 
-function Triage({ api, ticketId, canAct }: { api: Api; ticketId: string; canAct: boolean }) {
-  const [taskId, setTaskId] = useState(() => readStoredTask(ticketId));
+function Triage({ api, ticketId, canAct, taskId, onStarted }: {
+  api: Api;
+  ticketId: string;
+  canAct: boolean;
+  taskId: string | null;
+  onStarted: (task: string) => void;
+}) {
   const [task, setTask] = useState<Task | null>(null);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -89,12 +107,7 @@ function Triage({ api, ticketId, canAct }: { api: Api; ticketId: string; canAct:
       setError(describeError(response.status, failure));
       return;
     }
-    try {
-      window.sessionStorage.setItem(taskKey(ticketId), data.id);
-    } catch {
-      // Only the reload convenience is lost when storage is blocked.
-    }
-    setTaskId(data.id);
+    onStarted(data.id);
   }
 
   const running = task !== null && !TERMINAL.has(task.status);
@@ -109,8 +122,9 @@ function Triage({ api, ticketId, canAct }: { api: Api; ticketId: string; canAct:
         {task && <p><Seal status={task.status} /></p>}
         {task?.error && <p className="alert">✕ Falha: {task.error}</p>}
         {result?.response && <p className="lead prewrap">{result.response}</p>}
-        {task?.status === "needs_approval" && <p>Reembolso proposto. A tarefa continua depois da decisão de um aprovador.</p>}
+        {task?.status === "needs_approval" && <p>Reembolso aguardando decisão. A tarefa continua depois que um aprovador decidir.</p>}
         {result?.refund && <p>✓ Reembolso simulado registrado.</p>}
+        {result?.approval_state === "rejected" && <p>✕ Reembolso rejeitado pelo aprovador.</p>}
       </div>
       {result?.citations && result.citations.length > 0 && (
         <>
@@ -126,7 +140,12 @@ function Triage({ api, ticketId, canAct }: { api: Api; ticketId: string; canAct:
   );
 }
 
-function Refund({ api, ticketId, onDone }: { api: Api; ticketId: string; onDone: (message: string) => void }) {
+function Refund({ api, ticketId, onDone, onTask }: {
+  api: Api;
+  ticketId: string;
+  onDone: (message: string) => void;
+  onTask: (task: string) => void;
+}) {
   const [error, setError] = useState("");
   const key = useRef(crypto.randomUUID());
 
@@ -141,6 +160,7 @@ function Refund({ api, ticketId, onDone }: { api: Api; ticketId: string; onDone:
     if (data) {
       key.current = crypto.randomUUID();
       form.reset();
+      if (data.task_id) onTask(data.task_id);
       onDone("Solicitação enviada para aprovação");
     } else {
       setError(describeError(response.status, failure));
@@ -153,7 +173,7 @@ function Refund({ api, ticketId, onDone }: { api: Api; ticketId: string; onDone:
       {error && <ErrorNote message={error} />}
       <label htmlFor="amount_cents">Valor em centavos (1 a 5000)</label>
       <input id="amount_cents" name="amount_cents" type="number" min={1} max={5000} required />
-      <p className="muted" id="refund-note">Registra um pedido de aprovação. O efeito do reembolso só é executado pela tarefa de análise.</p>
+      <p className="muted">Um aprovador decide. Aprovado, o reembolso é executado no valor pedido. A autorização vale 15 minutos.</p>
       <button className="btn ghost">Pedir aprovação</button>
     </form>
   );
