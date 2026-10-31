@@ -6,8 +6,8 @@
       "requirement_ids": [
         "SEC-001"
       ],
-      "status": "PASS_LOCAL_STACK",
-      "evidence": ".planning/phases/001-console/VERIFY.md"
+      "status": "PASS_LOCAL_AND_FLY_DEMO",
+      "evidence": ".planning/phases/002-blockers/VERIFY.md"
     },
     {
       "id": "console-tickets",
@@ -15,8 +15,8 @@
       "requirement_ids": [
         "API-001"
       ],
-      "status": "PASS_LOCAL_STACK",
-      "evidence": ".planning/phases/001-console/VERIFY.md"
+      "status": "PASS_LOCAL_AND_FLY_DEMO",
+      "evidence": ".planning/phases/002-blockers/VERIFY.md"
     },
     {
       "id": "console-approvals",
@@ -25,8 +25,8 @@
         "API-001",
         "SEC-001"
       ],
-      "status": "PASS_LOCAL_STACK",
-      "evidence": ".planning/phases/001-console/VERIFY.md"
+      "status": "PASS_LOCAL_AND_FLY_DEMO",
+      "evidence": ".planning/phases/002-blockers/VERIFY.md"
     },
     {
       "id": "console-quality",
@@ -35,8 +35,8 @@
         "A11Y-001",
         "PERF-001"
       ],
-      "status": "PASS_LOCAL_STACK",
-      "evidence": ".planning/phases/001-console/VERIFY.md"
+      "status": "PASS_LOCAL_AND_FLY_DEMO",
+      "evidence": ".planning/phases/002-blockers/VERIFY.md"
     }
   ]
 }
