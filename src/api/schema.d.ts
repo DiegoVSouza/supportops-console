@@ -414,6 +414,10 @@ export interface components {
             llm_usage?: {
                 [key: string]: number | string;
             } | null;
+            /** Llm Steps */
+            llm_steps?: {
+                [key: string]: number | string;
+            }[] | null;
         };
         /** ValidationError */
         ValidationError: {
