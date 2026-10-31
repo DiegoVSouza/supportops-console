@@ -1,5 +1,16 @@
 # SupportOps Console
 
+<!-- case:start -->
+## O case
+
+- **Problema.** Um fluxo de reembolso com controle duplo precisa de um console que mostre quem pode o quê e aguente um backend frio.
+- **Decisão.** React sobre o design system `colagem-ui`, cliente tipado gerado do contrato do P05 e aviso de espera para máquinas paradas. As origens da API e do provedor de identidade vêm de `config.json`, não do build.
+- **Medido.** 33 testes, bundle de 92,0 KB gzip contra orçamento de 120 KB no último gate completo (`docs/harness/frontend-platform` no lab) e um teste ponta a ponta offline no navegador. O teste ponta a ponta na stack real não foi repetido.
+- **Como rodar.** `npm ci && python scripts/check_fast.py`
+- **Limites.** Ainda sem deploy. A checagem de contrato compara com o P05 só quando há um checkout irmão.
+- **Docs.** [Arquitetura](docs/architecture.md).
+<!-- case:end -->
+
 Console web da plataforma de suporte P05. Agentes criam tickets, rodam a análise e pedem reembolso. Aprovadores veem cada reembolso pendente com valor e solicitante e decidem. O login usa Keycloak com Authorization Code e PKCE.
 
 ## Como rodar

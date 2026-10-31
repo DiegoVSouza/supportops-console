@@ -1,5 +1,16 @@
 # SupportOps Console
 
+<!-- case:start -->
+## The case
+
+- **Problem.** A refund flow with dual control needs a console that shows who may do what, and survives a cold backend.
+- **Decision.** React on the `colagem-ui` design system, a typed client generated from the P05 contract, and a wake notice for stopped machines. The API and identity provider origins come from `config.json`, not the build.
+- **Measured.** 33 tests, a 92.0 KB gzip bundle against a 120 KB budget at the last full gate (`docs/harness/frontend-platform` in the lab), and an offline browser end-to-end run. The real-stack end-to-end run was not repeated.
+- **Run it.** `npm ci && python scripts/check_fast.py`
+- **Limits.** Not deployed yet. The contract check compares against P05 only when a sibling checkout exists.
+- **Docs.** [Architecture](docs/architecture.md).
+<!-- case:end -->
+
 Browser console for the P05 support platform. Agents create tickets, run triage and request refunds. Approvers see each pending refund with its amount and requester, then decide. Sign-in is Keycloak Authorization Code with PKCE.
 
 ## Run it
