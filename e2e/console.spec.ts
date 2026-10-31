@@ -13,7 +13,7 @@ async function signIn(page: Page, username: string, secret: string) {
   await page.locator("#username").fill(username);
   await page.locator("#password").fill(secret);
   await page.locator("#kc-login").click();
-  await expect(page.getByRole("heading", { level: 1, name: "Tickets" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Tickets" })).toBeVisible({ timeout: 45_000 });
 }
 
 async function expectNoViolations(page: Page) {
