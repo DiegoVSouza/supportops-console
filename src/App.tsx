@@ -43,19 +43,47 @@ export function App({ config }: { config: RuntimeConfig }) {
   }, [manager]);
 
   if (!ready) return <p className="wrap">carregando…</p>;
-  if (!session) return <SignIn manager={manager} failed={failed} />;
+  if (!session) return <SignIn manager={manager} issuer={config.oidcIssuer} failed={failed} />;
   return <Console manager={manager} session={session} />;
 }
 
-function SignIn({ manager, failed }: { manager: UserManager; failed: boolean }) {
+const WAKE_TIMEOUT_MS = 240_000;
+
+// The identity server stops at idle, so sign-in may have to wait for it to boot.
+export async function waitForIdentityServer(issuer: string): Promise<boolean> {
+  const deadline = Date.now() + WAKE_TIMEOUT_MS;
+  while (Date.now() < deadline) {
+    try {
+      const response = await fetch(`${issuer}/.well-known/openid-configuration`, { cache: "no-store" });
+      if (response.ok) return true;
+    } catch {
+      // Not listening yet.
+    }
+    await new Promise((resolve) => window.setTimeout(resolve, 3000));
+  }
+  return false;
+}
+
+function SignIn({ manager, issuer, failed }: { manager: UserManager; issuer: string; failed: boolean }) {
   const [error, setError] = useState(failed);
+  const [waking, setWaking] = useState(false);
+
+  async function start() {
+    setError(false);
+    setWaking(true);
+    if (await waitForIdentityServer(issuer)) await manager.signinRedirect().catch(() => setError(true));
+    else setError(true);
+    setWaking(false);
+  }
+
   return (
     <main className="wrap signin">
       <Logo />
       <h1 className="headline">Central de atendimento</h1>
       <p className="lead">Tickets, análise assistida e aprovações de reembolso em um só lugar.</p>
       {error && <p role="alert" className="alert">✕ Não foi possível autenticar. Verifique o servidor de identidade e tente de novo.</p>}
-      <button className="btn" onClick={() => manager.signinRedirect().catch(() => setError(true))}>Entrar</button>
+      {waking && <p role="status">Acordando o serviço de login. Sem uso ele dorme, e isso pode levar até dois minutos…</p>}
+      <button className="btn" disabled={waking} onClick={() => void start()}>Entrar</button>
     </main>
   );
 }

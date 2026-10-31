@@ -7,6 +7,7 @@ test("the session renews itself before the access token expires", async ({ brows
   const page = await (await browser.newContext({ ignoreHTTPSErrors: true })).newPage();
   await page.goto("/");
   await page.getByRole("button", { name: "Entrar" }).click();
+  await page.locator("#username").waitFor({ timeout: 240_000 });
   await page.locator("#username").fill("agent-a");
   await page.locator("#password").fill(process.env.E2E_AGENT_A_PASSWORD ?? "");
   await page.locator("#kc-login").click();

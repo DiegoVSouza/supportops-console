@@ -10,6 +10,7 @@ const password = (name: string) => {
 async function signIn(page: Page, username: string, secret: string) {
   await page.goto("/");
   await page.getByRole("button", { name: "Entrar" }).click();
+  await page.locator("#username").waitFor({ timeout: 240_000 });
   await page.locator("#username").fill(username);
   await page.locator("#password").fill(secret);
   await page.locator("#kc-login").click();
