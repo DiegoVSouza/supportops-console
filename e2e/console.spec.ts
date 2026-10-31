@@ -28,6 +28,7 @@ test("agent and approver complete a refund, and tenants stay apart", async ({ br
   const cspErrors: string[] = [];
   agent.on("console", (message) => { if (/Content.Security.Policy/i.test(message.text())) cspErrors.push(message.text()); });
   await agent.goto("/");
+  await expect(agent.getByRole("button", { name: "Entrar" })).toBeVisible();
   await expectNoViolations(agent);
   await signIn(agent, "agent-a", password("E2E_AGENT_A_PASSWORD"));
   await expectNoViolations(agent);

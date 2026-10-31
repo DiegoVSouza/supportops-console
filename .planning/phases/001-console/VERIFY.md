@@ -1,6 +1,6 @@
 # Verification
 
-PASS — 2026-10-30, local stack scope. Real Fly deploy not run.
+PASS — 2026-10-30, local stack; 2026-10-31, deployed on Fly.
 
 | Command (cwd: projects/p06) | Exit | Evidence (`artifacts/evidence/console-001/`) |
 | --- | --- | --- |
@@ -10,6 +10,8 @@ PASS — 2026-10-30, local stack scope. Real Fly deploy not run.
 | `python scripts/check_full.py`, attempt 2, new `e2e/screens.mjs` not in lint globals | 1 | `check-full-attempt2.txt` |
 | `python scripts/e2e.py`, after layout changes | 0, 2 passed | `e2e-attempt3.txt` |
 | `python scripts/check_full.py`, attempt 3 | 0, 18 passed (18); budget 89.6 KB gzip of 120 KB | `check-full-attempt3.txt` |
+| `python scripts/e2e_fly.py` against https://supportops-lab-web.fly.dev | 0, 2 passed | lab `artifacts/evidence/fly/console-deploy-006/e2e-fly-attempt3.txt` |
+| `python scripts/check_full.py`, attempt 4, after the nginx and e2e changes | 0 | `check-full-attempt4.txt` |
 
 E2e attempt 1 found a real defect: the console did not request `billing:read` and `crm:read`, the worker's MCP lookups need them, and the task ended `worker_failure`. The UI displayed that failure correctly. Fixed in `src/auth.ts` and `ops/stack/idp_clients.py`.
 
