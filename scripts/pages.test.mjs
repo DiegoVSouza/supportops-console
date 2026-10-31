@@ -8,7 +8,7 @@ const env = {
   OIDC_ISSUER: "https://supportops-lab-idp.fly.dev/realms/supportops",
   OIDC_CLIENT_ID: "supportops-web",
 };
-const template = readFileSync(join(process.cwd(), "pages/_headers.template"), "utf8");
+const template = readFileSync(join(process.cwd(), "pages/_headers.template"), "utf8").replace(/\r\n/g, "\n");
 
 describe("Cloudflare Pages output (FE-001, FE-002)", () => {
   it("config carries the API origin and the issuer without a trailing slash", () => {
