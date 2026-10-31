@@ -4,6 +4,26 @@
  */
 
 export interface paths {
+    "/v1/demo/runs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Demo Runs
+         * @description Public, read-only: the last live runs as numbers and identifiers only (no ticket text, no model output).
+         */
+        get: operations["demo_runs_v1_demo_runs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/healthz": {
         parameters: {
             query?: never;
@@ -441,6 +461,28 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    demo_runs_v1_demo_runs_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown[];
+                    };
+                };
+            };
+        };
+    };
     health_healthz_get: {
         parameters: {
             query?: never;
