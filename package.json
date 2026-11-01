@@ -17,7 +17,7 @@
     "build:pages": "npm run build && node scripts/pages.mjs build"
   },
   "dependencies": {
-    "colagem-ui": "file:vendor/colagem-ui-0.4.1.tgz",
+    "colagem-ui": "file:vendor/colagem-ui-0.4.4.tgz",
     "oidc-client-ts": "3.5.0",
     "openapi-fetch": "0.17.0",
     "react": "19.3.1",
