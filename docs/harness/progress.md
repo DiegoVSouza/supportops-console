@@ -12,3 +12,4 @@ Console built, contract-generated, in the root stack and passing real-browser e2
 2026-10-31 phase 002: adopted P05 0.4.5, manual refund follows its task, traceparent on API calls, stub_status for metrics.
 
 2026-10-31 phase 003: console rebuilt on the pinned colagem-ui 0.3.0 (level 0); API base and identity origins come from `config.json` so the same build runs on Cloudflare Pages; wake notice for cold Fly services; `pages.mjs` renders `config.json` and `_headers`. Offline browser e2e with axe contrast passes; real-stack e2e and any deploy are pending.
+- 2026-11-02: the e2e against the Fly stack passed at `7898c8a` (3 passed, renewal skipped by design) and the silent token renewal passed with `E2E_RENEWAL=1` (4.1 min). Evidence in `artifacts/evidence/status-reconcile/`. The console stays on Fly by owner decision; there is no Pages project for it.
