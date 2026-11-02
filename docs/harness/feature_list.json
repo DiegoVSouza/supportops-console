@@ -49,8 +49,8 @@
         "FE-003",
         "A11Y-001"
       ],
-      "status": "PASS_LOCAL_OFFLINE_BROWSER; REAL_STACK_E2E_PENDING; PAGES_DEPLOY_PENDING",
-      "evidence": ".planning/phases/003-colagem-ui/VERIFY.md"
+      "status": "PASS_LOCAL_OFFLINE_BROWSER; PASS_REAL_STACK_E2E_ON_FLY; PAGES_DEPLOY_NOT_PLANNED_CONSOLE_SERVED_FROM_FLY",
+      "evidence": ".planning/phases/003-colagem-ui/VERIFY.md; artifacts/evidence/status-reconcile/e2e-fly-head.txt (P06 7898c8a against the Fly stack: 3 passed, renewal spec skipped by design); artifacts/evidence/status-reconcile/e2e-fly-renewal.txt (E2E_RENEWAL=1, silent renewal passed in 4.1 min). The console is served by supportops-lab-web on Fly by owner decision; there is no Pages project for it"
     }
   ]
 }
