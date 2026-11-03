@@ -100,7 +100,7 @@ function Console({ manager, session, apiBaseUrl }: { manager: UserManager; sessi
   const canApprove = session.roles.includes("approver");
   return (
     <Layout session={session} route={route} canApprove={canApprove} onSignOut={() => void manager.signoutRedirect()}>
-      {route.name === "tickets" && <TicketsPage api={api} canWrite={session.roles.includes("agent")} />}
+      {route.name === "tickets" && <TicketsPage api={api} canWrite={session.roles.includes("agent")} tenant={session.tenant} />}
       {route.name === "ticket" && <TicketPage key={route.id} api={api} id={route.id} canAct={session.roles.includes("agent")} />}
       {route.name === "approvals" && <ApprovalsPage api={api} canApprove={canApprove} />}
     </Layout>

@@ -28,3 +28,31 @@
 #root { min-height: 100svh; display: flex; flex-direction: column; }
 #root > main { flex: 1; width: 100%; }
 .hl-wrap { margin-bottom: var(--space-5); }
+/* Demo: one panel, the example buttons, then the path of the ticket as a flow chart. Colors come from the tokens. */
+.presets { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--space-4); margin: var(--space-3) 0; }
+.presets li { display: grid; gap: var(--space-1); align-content: start; }
+.preset-hint { font-size: 14px; }
+.own-ticket { margin: var(--space-5) 0; }
+.own-ticket > summary { cursor: pointer; min-height: var(--hit); display: flex; align-items: center; font-weight: 700; }
+.own-ticket > summary:hover { text-decoration: underline; }
+.flowchart { margin-top: var(--space-5); }
+.fc-list { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: 0; }
+.fc-step { position: relative; padding-bottom: var(--space-5); }
+.fc-step:last-child { padding-bottom: 0; }
+/* The arrow between two boxes. */
+.fc-step:not(:last-child)::after { content: "▼"; position: absolute; left: var(--space-5); bottom: var(--space-1); color: var(--page-mut); font-size: 14px; line-height: 1; }
+.fc-box { background: var(--ink); color: var(--paper); border-left: 8px solid var(--page-mut); padding: var(--space-3) var(--space-4); }
+.fc-step[data-state="active"] .fc-box { border-left-color: var(--warn); background: var(--ink-2); }
+.fc-step[data-state="done"] .fc-box { border-left-color: var(--ok); }
+.fc-step[data-state="failed"] .fc-box { border-left-color: var(--err); }
+.fc-step[data-state="skipped"] .fc-box, .fc-step[data-state="idle"] .fc-box, .fc-step[data-state="unknown"] .fc-box { border-left-style: dashed; }
+.fc-top { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-3); margin: 0; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
+.fc-n { font-family: var(--f-display); font-size: 22px; }
+.fc-proj { background: var(--red); color: var(--on-red); padding: 0 var(--space-2); }
+.fc-state { margin-left: auto; }
+.fc-title { margin: var(--space-1) 0 0; font-family: var(--f-display); font-size: 24px; text-transform: uppercase; }
+.fc-what { margin: var(--space-1) 0 0; color: var(--mut); }
+.fc-note { margin: var(--space-2) 0 0; font-weight: 700; }
+.fc-used { margin-top: var(--space-4); }
+@media (prefers-reduced-motion: no-preference) { .fc-step[data-state="active"] .fc-state { animation: fc-blink 1.2s steps(2, jump-none) infinite; } }
+@keyframes fc-blink { 50% { opacity: 0.55; } }

@@ -3,8 +3,9 @@ import { Button, Card, EmptyState, Field, Panel } from "colagem-ui";
 import { describeError, type Api, type Ticket } from "../api/client";
 import { ErrorNote, Loading, Seal } from "../components/Feedback";
 import { PageTitle } from "../components/Layout";
+import { DemoRunner } from "./DemoRunner";
 
-export function TicketsPage({ api, canWrite }: { api: Api; canWrite: boolean }) {
+export function TicketsPage({ api, canWrite, tenant = "" }: { api: Api; canWrite: boolean; tenant?: string }) {
   const [tickets, setTickets] = useState<Ticket[] | null>(null);
   const [error, setError] = useState("");
 
@@ -21,8 +22,15 @@ export function TicketsPage({ api, canWrite }: { api: Api; canWrite: boolean }) 
     <>
       <PageTitle>Tickets</PageTitle>
       {error && <ErrorNote message={error} />}
-      <div className={canWrite ? "split" : undefined}>
-        {canWrite && <NewTicket api={api} onCreated={load} />}
+      {canWrite && <DemoRunner api={api} tenant={tenant} onCreated={load} />}
+      {canWrite && (
+        <details className="own-ticket">
+          <summary>Criar um ticket com meus próprios dados</summary>
+          <NewTicket api={api} onCreated={load} />
+        </details>
+      )}
+      <div>
+        <h2 className="sub">Tickets deste tenant</h2>
         <div>
           {tickets === null && !error && <Loading />}
           {tickets?.length === 0 && <EmptyState numeral="00" text="Nenhum ticket neste tenant ainda." />}
