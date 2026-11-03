@@ -5,7 +5,7 @@ import "colagem-ui/style.css";
 import "./styles/console.css";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Headline } from "colagem-ui";
+import { Button, Headline } from "colagem-ui";
 import { App } from "./App";
 import { ErrorNote } from "./components/Feedback";
 import { loadConfig } from "./config";
@@ -25,6 +25,7 @@ loadConfig()
       <main className="wrap">
         <Headline>Console indisponível</Headline>
         <ErrorNote message="Não foi possível carregar a configuração. Tente novamente em instantes." />
+        <Button onClick={() => window.location.reload()}>Tentar de novo</Button>
       </main>,
     ),
   );

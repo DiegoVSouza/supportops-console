@@ -85,7 +85,7 @@ function SignIn({ manager, issuer, failed }: { manager: UserManager; issuer: str
       <Headline>Central de atendimento</Headline>
       <Lead>Tickets, análise assistida e aprovações de reembolso em um só lugar.</Lead>
       {error && <ErrorNote message="Não foi possível autenticar. Verifique o servidor de identidade e tente de novo." />}
-      {waking && <WakeNotice service="o serviço de login" elapsed={elapsed} expected={25} onRetry={() => undefined} labels={WAKE_LABELS} />}
+      {waking && <WakeNotice service="o serviço de login" elapsed={elapsed} expected={25} onRetry={() => void start()} labels={WAKE_LABELS} />}
       <Button disabled={waking} disabledReason={waking ? "Aguarde o serviço de login acordar." : undefined} onClick={() => void start()}>Entrar</Button>
     </main>
   );

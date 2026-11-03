@@ -25,11 +25,11 @@ export function ErrorNote({ message }: { message: string }) {
   return <p role="alert" className="alert"><span aria-hidden="true">✕ </span>{message}</p>;
 }
 
-const noop = () => undefined;
+const reload = () => window.location.reload();
 
 /** Plain text first; after a few seconds explain that the Fly service may be waking (FE-003). */
 export function Loading({ service = "a API" }: { service?: string }) {
   const elapsed = useElapsed(true);
   if (elapsed < 4) return <p>carregando…</p>;
-  return <WakeNotice service={service} elapsed={elapsed} expected={20} onRetry={noop} labels={WAKE_LABELS} />;
+  return <WakeNotice service={service} elapsed={elapsed} expected={20} onRetry={reload} labels={WAKE_LABELS} />;
 }
