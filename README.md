@@ -5,9 +5,9 @@
 
 - **Problem.** A refund flow with dual control needs a console that shows who may do what, and survives a cold backend.
 - **Decision.** React on the `colagem-ui` design system, a typed client generated from the P05 contract, and a wake notice for stopped machines. The API and identity provider origins come from `config.json`, not the build.
-- **Measured.** 33 tests, a 92.0 KB gzip bundle against a 120 KB budget at the last full gate (`docs/harness/frontend-platform` in the lab), and an offline browser end-to-end run. The real-stack end-to-end run was not repeated.
+- **Measured.** 33 tests and a 92.0 KB gzip bundle against a 120 KB budget at the recorded full gate (`docs/harness/frontend-platform` in the lab). The Fly stack browser end-to-end run passed at commit `7898c8a`, and the separate silent-renewal run passed (`artifacts/evidence/status-reconcile/`).
 - **Run it.** `npm ci && python scripts/check_fast.py`
-- **Limits.** Not deployed yet. The contract check compares against P05 only when a sibling checkout exists.
+- **Limits.** The console is served from Fly; no Cloudflare Pages project is planned for it. The contract check compares against P05 only when a sibling checkout exists.
 - **Docs.** [Architecture](docs/architecture.md).
 <!-- case:end -->
 
