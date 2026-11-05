@@ -1,5 +1,9 @@
 # Intake decisions — P06 SupportOps Console
 
+## Current hosting decision, reconciled 2026-11-04
+
+The later owner decision keeps the public console on Fly (`supportops-lab-web`), as recorded in README.md and the 2026-11-02 progress entry. No Cloudflare Pages console deployment is planned. The Pages/cross-origin design below is historical build capability, superseded as a public hosting destination. Existing Fly flow and separate silent-renewal acceptance are recorded in `artifacts/evidence/status-reconcile/e2e-fly-head.txt` and `e2e-fly-renewal.txt`, both exit 0. This clarification authorizes no new deployment or public test.
+
 - Product: browser console for P05, for support agents and refund approvers. See `.planning/phases/001-console/SPEC.md`.
 - Profile: `workflow-automation` with `has_agent: false`, the closest kit profile. The agent and its trifecta stay owned by P05. The console renders tenant data, so `multi_tenant` and `sensitive_data` are true. Discovery: lab `docs/harness/adaptation-discovery.md`.
 - No `web-saas` kit profile: lab rule 3 needs two real projects, and this is the first.

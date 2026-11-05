@@ -1,5 +1,7 @@
 # Progress
 
+- 2026-11-04 phase 004: reconciled decisions.md with the later owner decision to serve the console from Fly; Pages remains historical build capability. Full local gate attempt 1 exited 0 (fast/build/budget/offline browser/image). Evidence: `artifacts/evidence/hosting-decision-004/`. Existing Fly and renewal acceptance were read, not replayed.
+
 - Kit initialization completed.
 - Next: complete intake and create the first SDD phase.
 
