@@ -35,6 +35,7 @@ test("agent and approver complete a refund, and tenants stay apart", async ({ br
   await expectNoViolations(agent);
   await expect(agent.getByRole("link", { name: "Aprovações" })).toHaveCount(0);
 
+  await agent.getByText("Criar um ticket com meus próprios dados").click();
   await agent.getByLabel("Cliente").fill("customer-a");
   await agent.getByLabel("Assunto").fill(subject);
   await agent.getByLabel("Descrição").fill("Please review my invoice refund.");
@@ -77,6 +78,7 @@ test("a manual refund runs after approval, with the requested amount", async ({ 
   const subject = `E2E manual ${stamp}`;
   const agent = await (await browser.newContext({ ignoreHTTPSErrors: true })).newPage();
   await signIn(agent, "agent-a", password("E2E_AGENT_A_PASSWORD"));
+  await agent.getByText("Criar um ticket com meus próprios dados").click();
   await agent.getByLabel("Cliente").fill("customer-a");
   await agent.getByLabel("Assunto").fill(subject);
   await agent.getByLabel("Descrição").fill("Customer asked for a goodwill credit.");
