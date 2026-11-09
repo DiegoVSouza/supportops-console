@@ -235,8 +235,11 @@ export interface components {
     schemas: {
         /** ApprovalDecision */
         ApprovalDecision: {
-            /** Decision */
-            decision: string;
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "approved" | "rejected";
         };
         /** ApprovalState */
         ApprovalState: {
@@ -368,8 +371,9 @@ export interface components {
             /**
              * Decision
              * @default approved
+             * @enum {string}
              */
-            decision: string;
+            decision: "approved" | "rejected";
         };
         /** TicketCreate */
         TicketCreate: {
